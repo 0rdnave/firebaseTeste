@@ -1,0 +1,54 @@
+:root {
+  --input-linear: linear-gradient(210deg, #5423A8, #8A4DF5);
+  --button-linear: linear-gradient(120deg, #8A4DF5, #5423A8, #8A4DF5);
+  --border-linear: linear-gradient(120deg, #5423A8, #8A4DF5);
+  --white: #ebe3f8;
+  --black: #18013d;
+  --light-purple: #b19ad8;
+  --dark-purple: #574a6b;
+  
+  --border-height: 0.063rem;
+}
+
+.body {
+  margin: 0;
+  padding: 0; 
+
+  
+  
+  font-family: sans-serif;
+}
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.forms {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.forms select {
+font-size: 1.5rem;
+font-weight: 600;
+
+color: var(--dark-purple);
+}
+
+.markdown_formatado{
+  width: 400px;
+  height: 98vh;
+
+  margin-left: 2rem;
+  color: #ebe3f8;
+  background-color: #5423A8;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

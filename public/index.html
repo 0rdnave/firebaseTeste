@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <title>Document</title>
+
+</head>
+
+<body>
+  <script>
+    function getFile(form) {
+      const check = document.getElementById("check_Markdown");
+      let markdownToHTML = document.getElementById("markdown_text");
+      let rota = '/';
+      check.checked ? rota = '/preview' : rota;
+
+      fetch(`/files/${form.file_id.value}${rota}`)
+        .then(res => res.text())
+        .catch(err => alert(err))
+        .then(txt => form.file_content.value = txt)
+        .then(htmlMarkdown => markdownToHTML.innerHTML = htmlMarkdown);
+    }
+
+    function getFiles(form) {
+      const optionsList = document.getElementById('arquivos');
+
+      fetch(`/files`)
+        .then(res => res.json())
+        .then(files => files.map(file => `<option>${file}</option>`))
+        .then(options => optionsList.innerHTML = options.join(''));
+    }
+
+    function addFile(id, content) {
+      const headers = new Headers();
+      headers.set('content-type', 'application/json');
+      const body = JSON.stringify({ id, content });
+      fetch('/add', { method: 'POST', body, headers })
+        .then(res => res.text())
+        .catch(err => alert(err));
+    }
+
+    function removeFile(id) {
+      const headers = new Headers();
+      headers.set('content-type', 'application/json');
+      const file = JSON.stringify({ id });
+      fetch('/del', { method: 'POST', file, headers })
+        .then(res => res.text())
+        .catch(err => alert(err));
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      switch (e.target.action.value) {
+        case 'Criar':
+          addFile(e.target.file_id.value, e.target.file_content.value)
+          break;
+        case 'Buscar':
+          getFile(e.target)
+          break;
+        case 'Deletar':
+          removeFile(e.target.file_id.value)
+          break;
+      }
+
+    }
+
+    window.addEventListener('load', () => {
+      getFiles();
+    })
+    // pesquisar add Event Lister
+  </script>
+
+  <main>
+    <div>
+
+      <h1>Markdown</h1>
+
+      <form class="forms" onsubmit="handleSubmit(event)">
+        <div>
+          <input type="checkbox" id="check_Markdown">
+          <label for="check-Markdown">Formatar em HTML</label>
+        </div>
+        <datalist id="arquivos"></datalist>
+        <select name="action">
+          <option>Buscar</option>
+          <option>Criar</option>
+          <option>Deletar</option>
+        </select>
+        <input name="file_id" list="arquivos" type="text" placeholder="Post in">
+        <textarea name="file_content" placeholder="Markdown Content"></textarea><br>
+        <button id="button">Go</button>
+      </form>
+    </div>
+
+    <div class="markdown_formatado">
+      <div id="div_reference">
+        <p id="markdown_text">Conteúdo Formatado</p>
+      </div>
+    </div>
+
+  </main>
+</body>
+
+</html>
